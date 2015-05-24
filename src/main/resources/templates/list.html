@@ -1,1 +1,20 @@
-hello
+<table xmlns:th="http://www.thymeleaf.org">
+    <thead>
+    <tr>
+        <td>First Name</td>
+        <td>Second Name</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${attendees.empty}">
+        <td colspan="3">
+            No attendees
+        </td>
+    </tr>
+    <tr th:each="attendee : ${attendees}">
+        <td th:text="${attendee.firstname}"></td>
+        <td th:text="${attendee.secondname}"></td>
+    </tr>
+    </tbody>
+</table>
