@@ -12,16 +12,21 @@ import java.util.Map;
 public class Controller {
 
     private final org.agilestaffordshire.featureflags.attendees.repository repository;
+    private final AuditLog auditLog;
 
     @Autowired
-    public Controller(org.agilestaffordshire.featureflags.attendees.repository repository) {
+    public Controller(org.agilestaffordshire.featureflags.attendees.repository repository, AuditLog auditLog) {
         this.repository = repository;
+        this.auditLog = auditLog;
     }
 
     @RequestMapping("/")
     public ModelAndView index() {
         Map<String, Object> model = new HashMap<>();
 
+        if (FeatureFlags.AUDITING_VIEWS.isEnabled()) {
+            auditLog.audit("viewing attendees");
+        }
         model.put("attendees", repository.getAll());
         model.put(FeatureFlags.ADD_ATTENDEE.name(), FeatureFlags.ADD_ATTENDEE.isEnabled());
 
