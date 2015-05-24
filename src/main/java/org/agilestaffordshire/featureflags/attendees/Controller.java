@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class Controller {
 
@@ -17,7 +20,11 @@ public class Controller {
 
     @RequestMapping("/")
     public ModelAndView index() {
+        Map<String, Object> model = new HashMap<>();
 
-        return new ModelAndView("list", "attendees", repository.getAll());
+        model.put("attendees", repository.getAll());
+        model.put(FeatureFlags.ADD_ATTENDEE.name(), FeatureFlags.ADD_ATTENDEE.isEnabled());
+
+        return new ModelAndView("list", model);
     }
 }
